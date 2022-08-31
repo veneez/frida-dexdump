@@ -1,3 +1,43 @@
+https://blog.naver.com/gigs8041/222195819608
+```bash
+const classLoader = Java.enumerateClassLoadersSync()[0];
+	const PathClassLoader = Java.use('dalvik.system.PathClassLoader');
+	PathClassLoader.loadClass.overload('java.lang.String').implementation = function(name) {
+	// console.warn('[*] PathClassLoader.loadClass(String) called !');
+	// console.log('\t[+] name : ' + name);
+	
+	if(name === 'package.SplashActivity') {
+		Java.classFactory.loader = classLoader;
+		const SplashActivity = Java.classFactory.use('package.SplashActivity');
+		SplashActivity.onCreate.overload('android.os.Bundle').implementation = function(arg1) {
+			console.warn('\x1b[32m[*] SplashActivity.onCreate(Bundle) called !\x1b[0m');
+			return this.onCreate(arg1);
+		}
+	}
+	return this.loadClass(name);
+}
+[출처] [AOS][FRIDA] How to Hook Dynamic Loaded DEX Files|작성자 Koo00
+
+```
+
+```bash
+try {
+		const classLoader = Java.enumerateClassLoadersSync()[0];
+		// console.log(classLoader);
+		Java.classFactory.loader = classLoader;
+		var res = classLoader.findClass('????');
+		if(res !== null) {
+			// 후킹 내용 작성
+		}
+	} catch (e) {
+		// 예외 처리
+}
+[출처] [AOS][FRIDA] How to Hook Dynamic Loaded DEX Files|작성자 Koo00
+
+
+```
+
+
 # FRIDA-DEXDump
 
 
